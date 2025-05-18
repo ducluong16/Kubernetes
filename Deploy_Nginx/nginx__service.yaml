@@ -1,0 +1,18 @@
+# Định nghĩa loại tài nguyên là Service
+apiVersion: v1
+kind: Service
+metadata:
+  # Tên của Service
+  name: nginx-service
+spec:
+  # Selector để liên kết Service với các Pod có nhãn "app: nginx"
+  selector:
+    app: nginx
+  # Loại Service là NodePort, cho phép truy cập từ bên ngoài cụm Kubernetes thông qua một cổng trên Node
+  type: NodePort
+  # Định nghĩa các cổng mà Service sẽ sử dụng
+  ports:
+    - protocol: TCP # Giao thức sử dụng là TCP
+      port: 80 # Cổng mà Service lắng nghe (cổng bên trong cụm Kubernetes)
+      targetPort: 80 # Cổng mà Service chuyển tiếp lưu lượng đến container trong Pod
+      nodePort: 30000 # Cổng mà Service sẽ lắng nghe trên mỗi Node trong cụm Kubernetes

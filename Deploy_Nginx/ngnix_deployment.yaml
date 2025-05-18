@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+# Định nghĩa loại tài nguyên là Deployment
+kind: Deployment
+metadata:
+  # Tên của Deployment
+  name: nginx-deployment
+  # Các nhãn (labels) để gắn vào Deployment, giúp dễ dàng quản lý và tìm kiếm
+  labels:
+    app: nginx
+spec:
+  # Số lượng bản sao (replicas) của Pod cần chạy
+  replicas: 2
+  # Chiến lược cập nhật Deployment
+  strategy:
+    type: RollingUpdate # Loại chiến lược cập nhật là RollingUpdate (cập nhật cuốn chiếu)
+    rollingUpdate:
+      maxUnavailable: 1 # Số lượng Pod tối đa có thể không khả dụng trong quá trình cập nhật
+      maxSurge: 1 # Số lượng Pod tối đa có thể được tạo thêm trong quá trình cập nhật
+  # Selector để xác định các Pod thuộc về Deployment này
+  selector:
+    matchLabels:
+      app: nginx # Chỉ chọn các Pod có nhãn "app: nginx"
+  # Định nghĩa template để tạo các Pod
+  template:
+    metadata:
+      # Gắn nhãn cho các Pod được tạo từ Deployment này
+      labels:
+        app: nginx
+    spec:
+      # Định nghĩa container trong Pod
+      containers:
+        - name: nginx # Tên container
+          image: nginx # Ảnh Docker được sử dụng cho container
+          ports:
+            - containerPort: 80 # Cổng mà container lắng nghe (port bên trong container)
