@@ -30,15 +30,15 @@ spec:
                 secretKeyRef:
                   name: mongodb-secret
                   key: mongo-root-password
---- # delimiter for multiple documents within one configuration yaml
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: mongodb-service
 spec:
   selector:
-    app: mongodb # must match the label of the pod
+    app: mongodb
   ports:
     - protocol: TCP
       port: 27017
-      targetPort: 27017 # must match the containerPort of the pod
+      targetPort: 27017
